@@ -107,7 +107,21 @@ PROPERTY_FROM_XML(kABFirstNameProperty, GIVEN)
         }\
 }
 MULTI_PROPERTY_FROM_XML(kABEmailProperty, kABEmailHomeLabel, EMAIL)
+
+#ifndef GNUSTEP
+// macOS version - uses multi-value URLs property
 MULTI_PROPERTY_FROM_XML(kABURLsProperty, kABHomePageLabel, URL)
+#else
+// GNUstep version - uses single-value HomePage property
+- (void) addURL:(NSString*)aString
+{
+        if(aString != nil && ![aString isEqualToString:@""])
+        {
+                [person setValue:aString forProperty:kABHomePageProperty];
+        }
+}
+#endif
+
 //FIXME: This should actually be getting <PHOTO><BINVAL>{CDATA}</BINVAL></PHOTO>, not <PHOTO>{CDATA}</PHOTO>
 - (void) addPHOTO:(NSString*)aString
 {
